@@ -17,26 +17,34 @@ import PreviewImage from '../../../components/PreviewImage';
 import AddIcon from '@mui/icons-material/Add';
 
 
+import axios from 'axios';
 
 
-const AddCategory = () => {
+const SerViceAdd = () => {
     const fileRaf = useRef(null)
+    const[preview,setPreview]=useState(null)
 
     // const [file, setSelectedFile] = React.useState({
     //     file: undefined,
     //     previewURI: undefined
     // });
-
+const filedd=(file)=>{
+    const reader =new FileReader()
+    reader.readAsDataURL(file)
+    reader.onloadend=()=>{
+        setPreview(reader.result)
+    }
+}
 
 
 
     const formik = useFormik({
         initialValues: {
-            title: '',
+            name: '',
             img: null
         },
         validationSchema: Yup.object({
-            title: Yup
+            name: Yup
                 .string()
                 .max(255)
                 .min(3)
@@ -44,7 +52,7 @@ const AddCategory = () => {
                     'Title is required'),
             img: Yup.mixed()
                 .test("fileSize", "File size too large, max file size is 1 Mb", (file) =>
-                    file ? file.size <= 1100000 : true
+                    file ? file.size <= 1000000 : true
                 )
                 .test("fileType", "Incorrect file type", (file) =>
                     file
@@ -54,37 +62,57 @@ const AddCategory = () => {
 
         }),
         onSubmit: (value, { resetForm }) => {
-            console.log(value);
-            // fetch(`/admin/category/add`, {
+            console.log(value.img);
+            //e.preventDefault();
+            const formData = new FormData();
+            formData.append('photo', value.img);
+            formData.append('name', value.name);
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            };
+            axios.post("/servicesave", formData, config)
+                .then((response) => {
+                    console.log(response.data);
+                    // alert(response.data.error);
+                    resetForm({})
+                }).catch((err) => {
+                    console.log(err);
+                });
+
+            // console.log(value);
+            // fetch(`/servicesave`, {
             //     method: "POST",
             //     headers: {
 
-            //         'Content-Type': "application/json"
+            //         'content-type': 'multipart/form-data'
             //     },
 
-            //     body: JSON.stringify({ title: value.title })
+            //     body: formData
             // }).then((res) => {
             //     return res.json()
             // }).then(data => {
-            //console.log(data);
-            // if (data.error) {
-            //     // setValues({
-            //     //     ...initialValues,
-            //     //     error:data.error,
-            //     //    // success:false
-            //     // })
-            //     errorMessage(data.error)
-            //     resetForm({
-            //     })
-            //     // console.log(data.error)
-            // } else {
-            //     successMessage('Add Successfully')
-            //     resetForm({})
+            //     console.log(data)
+            //     if (data.error) {
+            //         // setValues({
+            //         //     ...initialValues,
+            //         //     error:data.error,
+            //         //    // success:false
+            //         // })
+            //        // errorMessage(data.error)
+            //         resetForm({
+            //         })
+            //         // console.log(data.error)
+            //     } else {
+            //         //successMessage('Add Successfully')
+            //         resetForm({})
+            //         console.log(data)
 
 
-            // }
+            //     }
 
-            // }).catch(err => console.log(err))
+            //  }).catch(err => console.log(err))
         }
     });
     return (
@@ -100,8 +128,8 @@ const AddCategory = () => {
 
                 }}
             >
-                <Link to="/allCategory">
-                    <Button color="success" variant="contained">All Category</Button>
+                <Link to="/allService">
+                    <Button color="success" variant="contained">All Service</Button>
                 </Link>
                 <Button variant="contained" >
                     Home
@@ -126,30 +154,32 @@ const AddCategory = () => {
                                 color="textPrimary"
                                 variant="h4"
                             >
-                                Add Category
+                                Add Service
                             </Typography>
 
                         </Box>
 
 
                         <TextField
-                            error={Boolean(formik.touched.title && formik.errors.title)}
+                            error={Boolean(formik.touched.name && formik.errors.name)}
                             fullWidth
-                            helperText={formik.touched.title && formik.errors.title}
+                            helperText={formik.touched.name && formik.errors.name}
                             label=" Enter Title"
                             margin="normal"
-                            name="title"
-                            onBlur={formik.handleBlur}
+                            name="name"
+                            //onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             type="text"
-                            value={formik.values.title}
+                            value={formik.values.name}
                             variant="outlined"
                         />
                         <input
                             name="img"
-                            onBlur={formik.handleBlur}
+                            //onBlur={formik.handleBlur}
                             hidden
                             onChange={(event) => {
+                                event.preventDefault()
+                                filedd(event.target.files[0])
                                 formik.setFieldValue("img", event.target.files[0]);
 
                             }}
@@ -171,7 +201,7 @@ const AddCategory = () => {
 
                         ) : (formik.values.img &&
                             <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-                                <PreviewImage file={formik.values.img} />
+                                <img src={preview} alt='preview' width="75px" height="75px" style={{borderRadius:'10px',display:'inline-block'}}/>
                             </Box>
 
                         )}
@@ -211,7 +241,7 @@ const AddCategory = () => {
                                 type="submit"
                                 variant="contained"
                             >
-                                Add Category
+                                Add Service
                             </Button>
                         </Box>
 
@@ -222,4 +252,4 @@ const AddCategory = () => {
     )
 };
 
-export default AddCategory;
+export default SerViceAdd;

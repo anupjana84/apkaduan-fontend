@@ -10,7 +10,7 @@ import Register from './layout/core/Register'
 
 import { Routes, Route, Link } from 'react-router-dom'
 import AllService from './layout/admin/service/AllService'
-import Services from './layout/admin/service/Services'
+import SerViceAdd from './layout/admin/service/SerViceAdd'
 import AddCategory from './layout/admin/category/AddCategory'
 import Allcategory from './layout/admin/category/Allcategory'
 
@@ -19,7 +19,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
+        <Route path="/serViceAdd" element={<SerViceAdd />} />
         <Route path="/about" element={<About />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
