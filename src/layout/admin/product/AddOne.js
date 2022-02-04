@@ -153,7 +153,7 @@ const AddOne=(props)=>{
 
     return (
         <AdminDashboard  title="Add Product">
-      <ToastContainer limit={1}/>
+    
       
      
         <form className="py-5"   onSubmit={formSubmit}>

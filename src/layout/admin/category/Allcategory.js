@@ -71,7 +71,7 @@ const Allcategory = () => {
         setPage(0)
     }
     const allCategory = () => {
-        fetch(`/admin/category/all?page=${page}`, {
+        fetch(`/api/admin/category/all?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

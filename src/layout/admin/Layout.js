@@ -120,7 +120,9 @@ const Layout=({children})=> {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{backgroundImage:
+       "linear-gradient(to right, #fc00ff 0%, #00dbde  51%, #fc00ff  100%)"
+         }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -179,6 +181,14 @@ const Layout=({children})=> {
                  <InboxIcon /> 
               </ListItemIcon>
               <ListItemText style={{textDecoration:"none"}} primary={" Category"} />
+            </ListItem>
+          </NavLink>
+         <NavLink to="/addState">
+            <ListItem button>
+              <ListItemIcon>
+                 <InboxIcon /> 
+              </ListItemIcon>
+              <ListItemText style={{textDecoration:"none"}} primary={" State"} />
             </ListItem>
           </NavLink>
        

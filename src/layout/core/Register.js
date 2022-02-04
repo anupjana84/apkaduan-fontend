@@ -16,7 +16,7 @@ import Master from '../core/Master'
 import {toast,ToastContainer } from 'react-toastify';
 import { successMessage,errorMessage } from '../../utils';
 import { useNavigate } from "react-router-dom";
-toast.configure();
+
 const Register = () => {
  const navigate = useNavigate();
   const errorMessage=(error)=>{
@@ -62,7 +62,7 @@ const Register = () => {
     }),
     onSubmit:(value,{resetForm})=>{
       console.log(value);
-       fetch(`/register`,{
+       fetch(`/api/register`,{
          method:"POST",
          headers:{
              Accept:"application/json",
@@ -225,7 +225,7 @@ const Register = () => {
           </form>
         </Container>
       </Box>
-      <ToastContainer limit={1}/>
+     
     </Master>
   );
 };

@@ -12,7 +12,7 @@ import {
 import Layout from '../Layout';
 import { errorMessage, successMessage } from '../../../utils';
 import { Link } from 'react-router-dom'
-import { API } from '../../../utils/api';
+
 import PreviewImage from '../../../components/PreviewImage';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -72,7 +72,7 @@ const filedd=(file)=>{
                     'content-type': 'multipart/form-data'
                 }
             };
-            axios.post("/servicesave", formData, config)
+            axios.post("/api/servicesave", formData, config)
                 .then((response) => {
                     console.log(response.data);
                     // alert(response.data.error);

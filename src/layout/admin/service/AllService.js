@@ -221,7 +221,8 @@ export default function AllService() {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [service, setService] = React.useState([]);
-
+    const [serVerPage, setServerPage]=useState(1)
+    const [serVerPageCount, setserVerPageCount]=useState(0)
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -277,7 +278,7 @@ export default function AllService() {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
     const getAllService = () => {
 
-        fetch(`/getAllService`, {
+        fetch(`/api/getAllService?page=${serVerPage}`, {
             method: "GET",
             headers: {
                 'Content-Type': "application/json"
@@ -286,14 +287,15 @@ export default function AllService() {
         }).then(res => {
             return res.json()
         }).then(result => {
-            // console.log(result);
+             console.log(result);
+            setserVerPageCount(result.totalPage)
             setService(result.data)
         }).catch(err => console.log(err))
     }
     useEffect(() => {
         getAllService()
 
-    }, [])
+    }, [serVerPage])
     return (
         <Layout>
             <Box
@@ -306,7 +308,7 @@ export default function AllService() {
 
                 }}
             >
-                <Link to="/serViceAdd">
+                <Link to="/api/serViceAdd">
                     <Button color="success" variant="contained">Service Create</Button>
                 </Link>
                 <Button variant="contained" >
@@ -392,7 +394,12 @@ export default function AllService() {
                         </Table>
                     </TableContainer>
                     <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'space-between' }} >
-                        <Pagination count={10} showFirstButton showLastButton />
+                        <Pagination count={serVerPageCount} showFirstButton showLastButton
+                        onChange={(event, value) => {
+                            setServerPage(value)
+                        }}
+                        
+                        />
 
                         <TablePagination
                             rowsPerPageOptions={[1, 2, 25]}

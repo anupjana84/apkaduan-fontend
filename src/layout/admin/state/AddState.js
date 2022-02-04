@@ -10,87 +10,71 @@ import {
     Typography
 } from '@mui/material';
 import Layout from '../Layout';
-// import { errorMessage, successMessage } from '../../../utils';
+import { errorMessage, successMessage } from '../../../utils';
 import { Link } from 'react-router-dom'
 
-import { toast,ToastContainer } from 'react-toastify';
+import { ToastContainer, toast, } from "react-toastify";
 
 
 
-const AddCategory = () => {
-  
-    const errrorTosta=(error)=>{
-        if(error){
-        toast.error(`${error}`,{
-            position: toast.POSITION.TOP_CENTER,
-            progress: undefined,
-          }, { autoClose: 3000 })
-        }
-        
-    }
-      const successTosta=(error)=>{
-        if(error){
-        toast.success(`${error}`,{
-            position: toast.POSITION.TOP_CENTER,
-            progress: undefined,
-          }, { autoClose: 3000 })
-        }
-        
-    }
 
-
+const AddState = () => {
 
     const formik = useFormik({
         initialValues: {
-            title: '',
-           
+            name: '',
+            id: ''
         },
         validationSchema: Yup.object({
-            title: Yup
+            name: Yup
                 .string()
                 .max(255)
                 .min(3)
-                .required(
-                    'Title is required'),
-           
+                .required('Title is required'),
+            id: Yup
+                .string()
+                .max(255)
+                .min(3)
+                .required('Title is required'),
+
+
 
         }),
         onSubmit: (value, { resetForm }) => {
+
             console.log(value);
-            fetch(`/api/admin/category/add`, {
+            fetch(`/api/admin/stateSave`, {
                 method: "POST",
                 headers: {
 
-                    'Content-Type': "application/json"
+                    'content-type': 'application/json'
                 },
-
-                body: JSON.stringify({ title: value.title })
+                body: JSON.stringify({ name: value.name, id: value.id })
             }).then((res) => {
                 return res.json()
             }).then(data => {
-            console.log(data);
-            if (data.error) {
-                // setValues({
-                //     ...initialValues,
-                //     error:data.error,
-                //    // success:false
-                // })
-                errrorTosta(data.error)
-                resetForm({
-                })
-                // console.log(data.error)
-            } else {
-                errrorTosta('Add Successfully')
-                resetForm({})
+                console.log(data)
+                if (data.error) {
+                    // setValues({
+                    //     ...initialValues,
+                    //     error:data.error,
+                    //    // success:false
+                    // })
+                    errorMessage(data.error)
+                    resetForm({
+                    })
+                    // console.log(data.error)
+                } else {
+                    successMessage('Add Successfully')
+                    resetForm({})
+                    //console.log(data)
 
-
-            }
+                }
 
             }).catch(err => console.log(err))
         }
     });
     return (
-        <>
         <Layout>
             <Box
                 sx={{
@@ -103,8 +87,8 @@ const AddCategory = () => {
 
                 }}
             >
-                <Link to="/allCategory">
-                    <Button color="success" variant="contained">All Category</Button>
+                <Link to="/allState">
+                    <Button sx={{ backgroundImage: "linear-gradient(to bottom right, red, yellow)" }} variant="contained">All State</Button>
                 </Link>
                 <Button variant="contained" >
                     Home
@@ -129,31 +113,35 @@ const AddCategory = () => {
                                 color="textPrimary"
                                 variant="h4"
                             >
-                                Add Category
+                                Add State
                             </Typography>
-
                         </Box>
-
-
                         <TextField
-                            error={Boolean(formik.touched.title && formik.errors.title)}
+                            error={Boolean(formik.touched.name && formik.errors.name)}
                             fullWidth
-                            helperText={formik.touched.title && formik.errors.title}
+                            helperText={formik.touched.name && formik.errors.name}
                             label=" Enter Title"
                             margin="normal"
-                            name="title"
+                            name="name"
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             type="text"
-                            value={formik.values.title}
+                            value={formik.values.name}
                             variant="outlined"
                         />
-                       
-
-                       
-                        <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-                            
-                        </Box>
+                        <TextField
+                            error={Boolean(formik.touched.id && formik.errors.id)}
+                            fullWidth
+                            helperText={formik.touched.id && formik.errors.id}
+                            label=" Enter id"
+                            margin="normal"
+                            name="id"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            type="text"
+                            value={formik.values.id}
+                            variant="outlined"
+                        />
                         <Box
                             sx={{
                                 alignItems: 'center',
@@ -161,10 +149,7 @@ const AddCategory = () => {
                                 ml: -1
                             }}
                         >
-
-
                         </Box>
-
                         <Box sx={{ py: 2 }}>
                             <Button
                                 color="primary"
@@ -174,16 +159,16 @@ const AddCategory = () => {
                                 type="submit"
                                 variant="contained"
                             >
-                                Add Category
+                                Add State
                             </Button>
                         </Box>
 
                     </form>
                 </Container>
             </Box>
+
         </Layout >
-        <ToastContainer limit={1}/></>
     )
 };
 
-export default AddCategory;
+export default AddState;
