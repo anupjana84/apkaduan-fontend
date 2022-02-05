@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from 'react'
 import Layout from '../Layout'
 
@@ -53,7 +55,7 @@ function createData(name, code, population, size) {
     return { name, code, population, size, density }
 }
 
-const Allcategory = () => {
+const AllDistrict = () => {
     const [page, setPage] = React.useState(1)
     const [totalPage, setTotalPage] = React.useState(1)
     const [rowsPerPage, setRowsPerPage] = React.useState(10)
@@ -70,8 +72,9 @@ const Allcategory = () => {
         setRowsPerPage(+event.target.value)
         setPage(0)
     }
-    const allCategory = () => {
-        fetch(`/api/admin/category/all?page=${page}`, {
+    ///get dist list
+    const allDist = () => {
+        fetch(`/api/admin/allState?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,7 +99,7 @@ const Allcategory = () => {
             .catch((err) => console.log(err))
     }
     useEffect(() => {
-        allCategory()
+        allDist()
     }, [page])
 
     return (
@@ -112,12 +115,12 @@ const Allcategory = () => {
                     margin: 0,
                 }}
             >
-                <Link to="/addCategory">
-                    <Button sx={{backgroundImage: "linear-gradient(to right, #f857a6 0%, #ff5858  51%, #f857a6  100%)" }}  variant="contained">
-                        Add Category
+                <Link to="/addDistrict">
+                    <Button sx={{ backgroundImage: "linear-gradient(to right, #F09819 0%, #EDDE5D  51%, #F09819  100%)" }} variant="contained">
+                        Add District
                     </Button>
                 </Link>
-                <Button variant="contained">Home</Button>
+                <Button variant="contained">District</Button>
             </Box>
             {/* ============Button=========== */}
             {lodding ? (
@@ -139,7 +142,7 @@ const Allcategory = () => {
                     {dataLodding ? (
                         <Box sx={{ width: "100%", height: "100%", justifyContent: 'center' }}>
                             <Typography variant="h6" sx={{ color: "#9b06d1", textAlign: 'center' }} component="h2">
-                                No Category Found
+                                No State Found
                             </Typography>
                         </Box>) : (
 
@@ -176,7 +179,7 @@ const Allcategory = () => {
                                                                     {i + 1}
                                                                 </TableCell>
                                                                 <TableCell align="left" colSpan={3}>
-                                                                    {item.title}
+                                                                    {item.name}
                                                                 </TableCell>
                                                                 <TableCell a3lign="left">Details</TableCell>
                                                             </TableRow>
@@ -208,4 +211,4 @@ const Allcategory = () => {
         </Layout >
     )
 }
-export default Allcategory
+export default AllDistrict

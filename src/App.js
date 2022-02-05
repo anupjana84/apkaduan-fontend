@@ -16,6 +16,9 @@ import AddCategory from './layout/admin/category/AddCategory'
 import Allcategory from './layout/admin/category/Allcategory'
 import AddState from './layout/admin/state/AddState'
 import AllState from './layout/admin/state/AllState'
+import AddDistrict from './layout/admin/district/AddDistrict'
+import AllDistrict from './layout/admin/district/AllDistrict'
+
 
 
 function App() {
@@ -33,6 +36,8 @@ function App() {
         <Route path="/allCategory" element={<Allcategory />} />
         <Route path="/addState" element={<AddState />} />
         <Route path="/allState" element={<AllState />} />
+        <Route path="/addDistrict" element={<AddDistrict />} />
+        <Route path="/allDistrict" element={<AllDistrict />} />
        
       </Routes>
       <ToastContainer autoClose={5000}  />

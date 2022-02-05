@@ -308,7 +308,7 @@ export default function AllService() {
 
                 }}
             >
-                <Link to="/api/serViceAdd">
+                <Link to="/serViceAdd">
                     <Button color="success" variant="contained">Service Create</Button>
                 </Link>
                 <Button variant="contained" >

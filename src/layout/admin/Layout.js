@@ -143,10 +143,10 @@ const Layout=({children})=> {
             </Link>
           </Typography>
           
-          <Typography variant="h6"  >
+          <Typography variant="h6" sx={{marginRight:'5px'}}  >
           APKA DUKAN@gmail.com
           </Typography>
-          <Button variant="contained" color="success">Logout</Button>
+          <Button variant="contained" sx={{backgroundImage:"linear-gradient(to right, #56CCF2 0%, #2F80ED  51%, #56CCF2  100%)"}} >Logout</Button>
          
          
         </Toolbar>
@@ -159,23 +159,35 @@ const Layout=({children})=> {
         </DrawerHeader>
         <Divider />
         <List>
-         <NavLink to="/dashboard">
-            <ListItem to="/dashboard" button>
+         <NavLink sx={{marginTop:'1px'}}
+         className={(isActive) =>
+                    'nav-link dashnavlink' + (isActive.isActive ? ' bg-info dashnavlink1' : '')
+                  } to="/dashboard">
+            <ListItem
+            to="/dashboard" button>
               <ListItemIcon>
                  <InboxIcon /> 
               </ListItemIcon>
               <ListItemText style={{textDecoration:"none"}} primary={"Dashboard"} />
             </ListItem>
           </NavLink>
-         <NavLink to="/allService">
+         <NavLink to="/allService" 
+         sx={{marginTop:'1px'}}
+          className={(isActive) =>
+            'nav-link dashnavlink' + (isActive.isActive ? ' bg-info dashnavlink1' : '')
+          }>
             <ListItem button>
               <ListItemIcon>
                  <InboxIcon /> 
               </ListItemIcon>
-              <ListItemText style={{textDecoration:"none"}} primary={"All Service"} />
+              <ListItemText style={{textDecoration:"none"}} primary={" Service"} />
             </ListItem>
           </NavLink>
-         <NavLink to="/allcategory">
+         <NavLink to="/allcategory"
+         sx={{marginTop:'1px'}}
+          className={(isActive) =>
+            'nav-link dashnavlink' + (isActive.isActive ? ' bg-info  dashnavlink1' : '')
+          }>
             <ListItem button>
               <ListItemIcon>
                  <InboxIcon /> 
@@ -183,12 +195,26 @@ const Layout=({children})=> {
               <ListItemText style={{textDecoration:"none"}} primary={" Category"} />
             </ListItem>
           </NavLink>
-         <NavLink to="/addState">
+         <NavLink to="/allState"
+          className={(isActive) =>
+            'nav-link dashnavlink' + (isActive.isActive ? ' bg-info  dashnavlink1' : '')
+          }>
             <ListItem button>
               <ListItemIcon>
                  <InboxIcon /> 
               </ListItemIcon>
               <ListItemText style={{textDecoration:"none"}} primary={" State"} />
+            </ListItem>
+          </NavLink>
+         <NavLink to="/allDistrict"
+          className={(isActive) =>
+            'nav-link dashnavlink' +    (isActive.isActive ? ' bg-info dashnavlink1' : '')
+          }>
+            <ListItem button>
+              <ListItemIcon>
+                 <InboxIcon /> 
+              </ListItemIcon>
+              <ListItemText style={{textDecoration:"none"}} primary={" District"} />
             </ListItem>
           </NavLink>
        

@@ -104,7 +104,7 @@ const AddCategory = () => {
                 }}
             >
                 <Link to="/allCategory">
-                    <Button color="success" variant="contained">All Category</Button>
+                    <Button sx={{backgroundImage: "linear-gradient(to right, #f857a6 0%, #ff5858  51%, #f857a6  100%)" }} variant="contained">All Category</Button>
                 </Link>
                 <Button variant="contained" >
                     Home
