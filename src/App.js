@@ -5,6 +5,8 @@ import About from './layout/core/About'
 import Dashboard from './layout/core/Dashboard'
 import Login from './layout/core/Login'
 import Register from './layout/core/Register'
+import RegisterDistAdmin from './layout/core/RegisterDistAdmin'
+import RegisterSeller from './layout/core/RegisterSeller'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -38,6 +40,8 @@ function App() {
         <Route path="/allState" element={<AllState />} />
         <Route path="/addDistrict" element={<AddDistrict />} />
         <Route path="/allDistrict" element={<AllDistrict />} />
+        <Route path="/registerDistAdmin" element={<RegisterDistAdmin />} />
+        <Route path="/registerSeller" element={<RegisterSeller />} />
        
       </Routes>
       <ToastContainer autoClose={5000}  />

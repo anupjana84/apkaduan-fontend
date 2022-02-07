@@ -39,7 +39,7 @@ const Header = () => {
                   className={(isActive) =>
                     'nav-link' + (isActive.isActive ? ' bg-danger' : '')
                   }
-                  to="/register"
+                  to="/registerOne"
                 >
                   Register
                 </NavLink>

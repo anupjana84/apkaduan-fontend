@@ -81,6 +81,7 @@ const Allcategory = () => {
                 return res.json()
             })
             .then((result) => {
+                console.log(result);
                 if (result.data && result.data.length > 0) {
                     setLodding(false)
                     setCategory(result.data)

@@ -118,8 +118,8 @@ const Layout=({children})=> {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
+    <Box sx={{ display: 'flex'}}>
+      {/* <CssBaseline /> */}
       <AppBar position="fixed" open={open} sx={{backgroundImage:
        "linear-gradient(to right, #fc00ff 0%, #00dbde  51%, #fc00ff  100%)"
          }}>
@@ -151,7 +151,9 @@ const Layout=({children})=> {
          
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent" open={open} sx={{backgroundImage:
+       "linear-gradient(to right, #fc00ff 0%, #00dbde  51%, #fc00ff  100%)"
+         }}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}

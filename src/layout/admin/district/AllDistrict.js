@@ -74,7 +74,7 @@ const AllDistrict = () => {
     }
     ///get dist list
     const allDist = () => {
-        fetch(`/api/admin/allState?page=${page}`, {
+        fetch(`/api/admin/category/all?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
