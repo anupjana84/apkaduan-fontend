@@ -15,6 +15,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Master from './Master';
 
 const Login = () => {
+  document.title ="APKA DUKAN | LOGIN"
     const formik = useFormik({
         initialValues: {
           email: '',

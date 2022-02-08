@@ -5,7 +5,7 @@ import About from './layout/core/About'
 import Dashboard from './layout/core/Dashboard'
 import Login from './layout/core/Login'
 import Register from './layout/core/Register'
-import RegisterDistAdmin from './layout/core/RegisterDistAdmin'
+import OtpSend from './layout/core/OtpSend'
 import RegisterSeller from './layout/core/RegisterSeller'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -28,7 +28,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/serViceAdd" element={<SerViceAdd />} />
+        <Route path="/serViceAdd"  element={<SerViceAdd />} />
         <Route path="/about" element={<About />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
@@ -40,7 +40,7 @@ function App() {
         <Route path="/allState" element={<AllState />} />
         <Route path="/addDistrict" element={<AddDistrict />} />
         <Route path="/allDistrict" element={<AllDistrict />} />
-        <Route path="/registerDistAdmin" element={<RegisterDistAdmin />} />
+        <Route path="/otpSend" element={<OtpSend />} />
         <Route path="/registerSeller" element={<RegisterSeller />} />
        
       </Routes>

@@ -18,7 +18,7 @@ import { toast,ToastContainer } from 'react-toastify';
 
 
 const AddCategory = () => {
-  
+    document.title ="APKA DUKAN | CATEGORY"
     const errrorTosta=(error)=>{
         if(error){
         toast.error(`${error}`,{

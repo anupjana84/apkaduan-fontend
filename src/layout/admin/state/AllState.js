@@ -55,6 +55,7 @@ function createData(name, code, population, size) {
 }
 
 const AllState = () => {
+    document.title ="APKA DUKAN | STATE"
     const [page, setPage] = React.useState(1)
     const [totalPage, setTotalPage] = React.useState(1)
     const [rowsPerPage, setRowsPerPage] = React.useState(10)

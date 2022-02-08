@@ -23,6 +23,7 @@ import Select from '@mui/material/Select';
 
 
 const AddDistrict = () => {
+    document.title ="APKA DUKAN | DISTRICT"
     const [stateAll, setState] = useState([])
     const [lodding, setLodding] = useState(true)
     const [dataLodding, setDataLodding] = useState(false)

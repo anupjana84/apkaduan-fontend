@@ -21,6 +21,8 @@ import axios from 'axios';
 
 
 const SerViceAdd = () => {
+    document.title ="APKA DUKAN | SERVICE"
+
     const fileRaf = useRef(null)
     const[preview,setPreview]=useState(null)
 
@@ -62,7 +64,7 @@ const filedd=(file)=>{
 
         }),
         onSubmit: (value, { resetForm }) => {
-            console.log(value.img);
+           // console.log(value.img);
             //e.preventDefault();
             const formData = new FormData();
             formData.append('photo', value.img);

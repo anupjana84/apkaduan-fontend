@@ -15,11 +15,14 @@ import {
 } from '@mui/material';
 
 import Master from '../core/Master'
-import { toast, ToastContainer } from 'react-toastify';
+import { toast,  } from 'react-toastify';
 import { successMessage, errorMessage } from '../../utils';
 import { useNavigate } from "react-router-dom";
 
+
 const Register = () => {
+    
+    document.title ="APKA DUKAN | REGISTER"
     const navigate = useNavigate();
     const errorMessage = (error) => {
         if (error) {
@@ -218,12 +221,25 @@ const Register = () => {
                             </Box>
 
                         </form>
+                        <Box>
+                            <Typography  variant="h5"  sx={{textAlign:"center", color:"#9b06d1", fontWeight:'bold'}}>
+                                OR REGISTER AS
+                            </Typography>
+                        </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: "center", marginTop: '1.0rem', flexDirection: { xs: 'column', md: 'row' }, }}>
                             <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}
-                                spacing={{ xs: 1, sm: 2, md: 4 }}>
-                                <Button variant="contained" >State Seller</Button>
-                                <Button variant="contained" sx={{ mt: { xs: '10px', md: '' } }}>District Seller</Button>
-                                <Button variant="contained" sx={{ mt: { xs: '10px', md: '' } }}>Seller</Button>
+                                spacing={{ xs: 1, sm: 2, md: 4 }}
+                                >
+                                <Button variant="contained" sx={{borderRadius:'25px',backgroundColor:'#0ce222',         borderRadius:'25px',}}
+                                onClick={()=>{navigate("/otpSend",{state:'stateadmin'})}}
+                                >State Seller</Button>
+                                <Button variant="contained"
+                                     onClick={()=>{navigate("/otpSend",{state:'distadmin'})}}
+                                sx={{backgroundColor:'#0ce222', mt: { xs: '10px', md: '' },borderRadius:'25px', }}>District Seller</Button>
+                                <Button variant="contained" 
+                                     onClick={()=>{navigate("/otpSend",{state:'seller'})}}
+                                   sx={{backgroundColor:'#0ce222', mt: { xs: '10px', md: '' },borderRadius:'25px' }}>Seller
+                                   </Button>
                             </Stack>
                         </Box>
                     </Card>

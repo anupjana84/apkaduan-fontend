@@ -214,6 +214,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function AllService() {
+    document.title ="APKA DUKAN | SERVICE"
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);

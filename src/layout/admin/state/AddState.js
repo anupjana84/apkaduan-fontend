@@ -19,7 +19,7 @@ import { ToastContainer, toast, } from "react-toastify";
 
 
 const AddState = () => {
-
+    document.title ="APKA DUKAN | STATE"
     const formik = useFormik({
         initialValues: {
             name: '',
