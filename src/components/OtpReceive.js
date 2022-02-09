@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactCodeInput from "react-code-input";
 
 import { useFormik } from 'formik';
@@ -24,14 +24,16 @@ import { useNavigate } from "react-router-dom";
 
 const CORRECT_PIN_CODE = "111222";
 
-const OtpReceive = () => {
+const OtpReceive = ({ mobile, changeForm }) => {
 
     document.title = "APKA DUKAN | REGISTER"
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
     const [isPinCodeValid, setIsPinCodeValid] = useState(true);
     const [pinCode, setPinCode] = useState("");
+    const [mobileNo, setMobile] = useState(null);
     const [btnIsPressed, setBtnIsPressed] = useState(false);
+    const [disabled, setDisabled] = useState(true);
 
     const checkPinCode = () => {
         const isPinCodeValid = pinCode === CORRECT_PIN_CODE;
@@ -43,18 +45,53 @@ const OtpReceive = () => {
 
     const handlePinChange = pinCode => {
         setPinCode(pinCode);
+        if (pinCode.length == 4) {
+            setDisabled(false)
+        }
         setBtnIsPressed(false);
     };
 
+    const sendOtp = (e) => {
+        e.preventDefault()
+        fetch(`/api/otpReceiveDistAdmin`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
 
+            },
+            body: JSON.stringify({
+                mobile: mobile,
+                otp: pinCode
 
+            })
+
+        }).then((res) => {
+            return res.json()
+        }).then(data => {
+           // console.log(data);
+            if (data.error) {
+                setOpen(false)
+                errorMessage(data.error)
+
+            } else {
+                localStorage.setItem('jwt',JSON.stringify(data))
+                successMessage('Register Successfully')
+                setPinCode('')
+                navigate('/dist/AdminDashboard')
+                
+
+            }
+        }).catch(err => console.log(err))
+
+    }
+
+    useEffect(() => {
+        setMobile(mobile)
+
+    }, [])
 
     return (
-
-
-
         <Card sx={{ padding: "10px" }} elevation={3}>
-
             <form >
                 <Box sx={{ my: 3 }}>
                     <Typography
@@ -86,11 +123,12 @@ const OtpReceive = () => {
                 <Box sx={{ py: 2 }}>
                     <Button
                         color="primary"
-                        onClick={checkPinCode}
+                        onClick={sendOtp}
                         fullWidth
                         size="large"
                         type="submit"
                         variant="contained"
+                        disabled={disabled}
                     >
                         Send OTP
                     </Button>

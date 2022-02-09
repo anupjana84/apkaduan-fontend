@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 import Master from './Master'
-import { toast, } from 'react-toastify';
+
 import { successMessage, errorMessage } from '../../utils';
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -28,12 +28,13 @@ const OtpSend = () => {
 
     document.title = "APKA DUKAN | REGISTER"
     const navigate = useNavigate();
-    const location = useLocation();
+    // const location = useLocation();
+    const [mobile, setMobile] = useState(null);
     const [open, setOpen] = useState(false);
     const [form1, setForm1] = useState(true)
     const [form2, setForm2] = useState(false)
     const [form3, setForm3] = useState(false)
-    const [mobile,setMobile]=useState(null)
+   
     // console.log(location);
     const formik = useFormik({
        
@@ -53,8 +54,7 @@ const OtpSend = () => {
 
         }),
         onSubmit: (value, { resetForm, setFieldValue, setValues }) => {
-            console.log(setValues, 'd');
-            setOpen(true)
+            
             fetch(`/api/otpsend`, {
                 method: "POST",
                 headers: {
@@ -72,17 +72,19 @@ const OtpSend = () => {
                     if (data.error) {
                         setOpen(false)
                         errorMessage(data.error)
-                        setFieldValue('mobile', '')
+                       // setFieldValue('mobile', '')
                         setValues(formik.values.mobile, '')
-                        console.log(value,'dd');
+                        //console.log(value,'dd');
                         resetForm({
                         })
                         // console.log(data.error)
                     } else {
+                        //console.log(data);
+                        setMobile(data.mobile)
                         setOpen(false)
-                        successMessage('Register Successfully')
+                        
                         resetForm({})
-                        console.log(value);
+                        //console.log(value);
                         setForm1(false)
                     }
                 })
@@ -91,6 +93,9 @@ const OtpSend = () => {
         }
 
     });
+    const changeForm=()=>{
+
+    }
 
     return (
         <Master>
@@ -148,7 +153,7 @@ const OtpSend = () => {
                     ):(
                         <>
                     {/* =========otp send componet===== */}
-                    <OtpReceive/>
+                    <OtpReceive mobile={mobile} changeForm={changeForm}  />
                       {/* =========otp send componet===== */}
                       </>
                     )}

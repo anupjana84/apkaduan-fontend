@@ -21,6 +21,9 @@ import AllState from './layout/admin/state/AllState'
 import AddDistrict from './layout/admin/district/AddDistrict'
 import AllDistrict from './layout/admin/district/AllDistrict'
 
+/// dist route
+import DistAdminRoute from './routes/DistAdminRoute'
+import DistAdminDashboard from './layout/distadmin/DistAdminDashboard'
 
 
 function App() {
@@ -36,12 +39,18 @@ function App() {
         <Route path="/allService" element={<AllService />} />
         <Route path="/addCategory" element={<AddCategory />} />
         <Route path="/allCategory" element={<Allcategory />} />
-        <Route path="/addState" element={<AddState />} />
         <Route path="/allState" element={<AllState />} />
         <Route path="/addDistrict" element={<AddDistrict />} />
         <Route path="/allDistrict" element={<AllDistrict />} />
         <Route path="/otpSend" element={<OtpSend />} />
         <Route path="/registerSeller" element={<RegisterSeller />} />
+        {/* ==========dist route============== */}
+        <Route path='*' element={<DistAdminRoute/>}>
+
+        <Route path="dist/AdminDashboard" element={<DistAdminDashboard />} />
+        </Route>
+          {/* ==========dist route============== */}
+        <Route path="*" element={<h1>Page Not Found</h1>} />
        
       </Routes>
       <ToastContainer autoClose={5000}  />
