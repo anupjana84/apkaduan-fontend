@@ -182,7 +182,7 @@ const AddCategory = () => {
                 </Container>
             </Box>
         </Layout >
-        <ToastContainer limit={1}/></>
+       </>
     )
 };
 
