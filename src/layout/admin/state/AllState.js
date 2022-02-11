@@ -55,6 +55,7 @@ function createData(name, code, population, size) {
 }
 
 const AllState = () => {
+    document.querySelectorAll(" p * div ")
     document.title ="APKA DUKAN | STATE"
     const [page, setPage] = React.useState(1)
     const [totalPage, setTotalPage] = React.useState(1)
@@ -173,7 +174,7 @@ const AllState = () => {
                                                 {category &&
                                                     category.map((item, i) => {
                                                         return (
-                                                            <TableRow hover key={i}>
+                                                            <TableRow hover key={item._id}>
                                                                 <TableCell align="left" colSpan={3}>
                                                                     {i + 1}
                                                                 </TableCell>

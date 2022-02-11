@@ -68,19 +68,19 @@ const OtpReceive = ({ mobile, changeForm }) => {
         }).then((res) => {
             return res.json()
         }).then(data => {
-           // console.log(data);
-            if (data.error) {
-                setOpen(false)
-                errorMessage(data.error)
+            console.log(data);
+            // if (data.error) {
+            //     setOpen(false)
+            //     errorMessage(data.error)
 
-            } else {
-                localStorage.setItem('jwt',JSON.stringify(data))
-                successMessage('Register Successfully')
-                setPinCode('')
-                navigate('/dist/AdminDashboard')
+            // } else {
+            //     localStorage.setItem('jwt',JSON.stringify(data))
+            //     successMessage('Register Successfully')
+            //     setPinCode('')
+            //     navigate('/dist/AdminDashboard')
                 
 
-            }
+            // }
         }).catch(err => console.log(err))
 
     }

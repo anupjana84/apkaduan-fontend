@@ -6,7 +6,9 @@ const DistAdminRoute = () => {
     const auth=true
   return (
   
-    isAutheticated() && isAutheticated().user.role==='distadmin'? <Outlet/> :< Navigate to="/" />
+    // isAutheticated() && isAutheticated().user.role==='distadmin'?
+     <Outlet/> 
+    //  :< Navigate to="/" />
    
   )
 }

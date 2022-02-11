@@ -230,15 +230,15 @@ const Register = () => {
                             <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}
                                 spacing={{ xs: 1, sm: 2, md: 4 }}
                                 >
-                                <Button variant="contained" sx={{borderRadius:'25px',backgroundColor:'#0ce222',         borderRadius:'25px',}}
+                                <Button variant="contained" sx={{backgroundColor:'#0ce222',textTransform:"none",   borderRadius:'25px',}}
                                 onClick={()=>{navigate("/otpSend",{state:'stateadmin'})}}
-                                >State Seller</Button>
+                                >State Channel Partner</Button>
                                 <Button variant="contained"
                                      onClick={()=>{navigate("/otpSend",{state:'distadmin'})}}
-                                sx={{backgroundColor:'#0ce222', mt: { xs: '10px', md: '' },borderRadius:'25px', }}>District Seller</Button>
+                                sx={{backgroundColor:'#0ce222',textTransform:"none", mt: { xs: '10px', md: '' },borderRadius:'25px', }}>District Channel Partner</Button>
                                 <Button variant="contained" 
                                      onClick={()=>{navigate("/otpSend",{state:'seller'})}}
-                                   sx={{backgroundColor:'#0ce222', mt: { xs: '10px', md: '' },borderRadius:'25px' }}>Seller
+                                   sx={{backgroundColor:'#0ce222',textTransform:"none", mt: { xs: '10px', md: '' },borderRadius:'25px' }}>Seller
                                    </Button>
                             </Stack>
                         </Box>

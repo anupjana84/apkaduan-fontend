@@ -1,17 +1,51 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import DistLayout from './DistLayout'
 import {
     Box,
     Button,
     Container,
-    Select,
+    Stack,
     TextField,
-    Typography
+    Typography,
+    Autocomplete
 } from '@mui/material';
 
 import { Link } from 'react-router-dom'
+import Cleave from 'cleave.js/react';
 
+
+const options = ['Option 1', 'Option 2'];
 const DistAdminDashboard = () => {
+    // document.querySelectorAll(" p * div ")
+    const [stateName, setStateName] = useState([])
+    const [value, setValue] = React.useState(options[0]);
+    const [inputValue, setInputValue] = React.useState('');
+    const getState = () => {
+        fetch(`/api/admin/getState`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+            .then((res) => {
+                return res.json()
+            })
+            .then((result) => {
+                console.log(result.data);
+                if (result.data && result.data.length > 0) {
+
+                    setStateName(result.data)
+
+                }
+
+            })
+            .catch((err) => console.log(err))
+    }
+    useEffect(() => {
+        getState()
+
+
+    }, [])
     return (
         <DistLayout>
             <Box
@@ -53,32 +87,96 @@ const DistAdminDashboard = () => {
                                 Add Your Details
                             </Typography>
                         </Box>
+                        {/* =================name email======== */}
                         <Box
-                            component="form"
                             sx={{
                                 display: "flex", flexDirection: { xs: 'column', md: 'row' }
                             }}
                             noValidate
                             autoComplete="off"
                         >
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
+                            <TextField
                                 fullWidth
-                                label="Age"
+                                label=" Enter Name"
+                                margin="normal"
+                                name="name"
+                                type="text"
+                                variant="outlined"
+                                sx={{ marginRight: "5px" }}
+                            />
+                            <TextField
+                                fullWidth
+                                label=" Enter Email"
+                                margin="normal"
+                                name="email"
+                                type="text"
+                                variant="outlined"
 
-                            >
+                            />
+                        </Box>
+                        {/* =================name email======== */}
+                        {/* =================aadhar pan======== */}
+                        <Box
+                            sx={{
+                                display: "flex", flexDirection: { xs: 'column', md: 'row' }
+                            }}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <TextField
+                                type="number"
+                                fullWidth
+                                label=" Enter aadhar"
+                                margin="normal"
+                                name="aadhar"
 
-                            </Select>
+                                variant="outlined"
+                                sx={{ marginRight: "5px" }}
+                            />
+                            <TextField
+                                fullWidth
+                                label=" Enter Pan"
+                                margin="normal"
+                                name="title"
+                                type="text"
+                                variant="outlined"
+
+                            />
+                        </Box>
+                        {/* =================aadhar pan======== */}
+                        {/* =============== state dist */}
+                        <Box
+                            sx={{
+                                display: "flex", flexDirection: { xs: 'column', md: 'row' }
+                            }}
+                            noValidate
+                            autoComplete="off"
+                        >
+
+
+                            <Autocomplete
+
+                                onChange={(event, newValue) => {
+                                    console.log(event, newValue)
+                                    setValue(newValue);
+                                }}
+                                getOptionLabel={(option) => option.name}
+                                options={stateName}
+                                fullWidth
+                                sx={{ marginRight: "5px" }}
+                                renderInput={(params) => <TextField fullWidth {...params} label="State Name" />}
+                            />
                             <TextField
                                 fullWidth
                                 id="outlined-uncontrolled"
                                 label="Uncontrolled"
-                                defaultValue="foo"
-                                sx={{ margin: "5px" }}
-                            />
-                        </Box>
 
+                                sx={{ marginLeft: { sm: "0px", md: "5px" }, marginTop: { sm: "7px", md: "0px" } }}
+
+                            />
+
+                        </Box>
+                        {/* =============== state dist */}
                         <TextField
                             fullWidth
                             label=" Enter Title"
@@ -109,7 +207,9 @@ const DistAdminDashboard = () => {
                                 Add Category
                             </Button>
                         </Box>
-
+                        <Cleave placeholder="Enter your credit card number"
+                            options={{ creditCard: true }}
+                            onChange={(e) => console.log(e)} />
                     </form>
 
                 </Container>

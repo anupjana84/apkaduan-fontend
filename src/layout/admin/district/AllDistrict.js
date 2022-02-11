@@ -56,6 +56,7 @@ function createData(name, code, population, size) {
 }
 
 const AllDistrict = () => {
+    document.querySelectorAll(" p * div ")
     document.title ="APKA DUKAN | DISTRICT"
     const [page, setPage] = React.useState(1)
     const [totalPage, setTotalPage] = React.useState(1)

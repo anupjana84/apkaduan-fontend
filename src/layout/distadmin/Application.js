@@ -1,7 +1,8 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import DistLayout from './DistLayout'
 
 const Application = () => {
+
   return (
     <DistLayout>Application</DistLayout>
   )

@@ -403,7 +403,7 @@ export default function AllService() {
                         />
 
                         <TablePagination
-                            rowsPerPageOptions={[1, 2, 25]}
+                            rowsPerPageOptions={[1, 5, 25]}
                             component="div"
                             count={rows.length}
                             rowsPerPage={rowsPerPage}

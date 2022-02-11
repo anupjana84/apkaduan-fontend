@@ -5,20 +5,20 @@ import * as Yup from 'yup';
 import {
     Box,
     Button,
-    Checkbox,
+    
     Container,
-    FormHelperText,
+  
     Card,
     TextField,
-    Stack,
+ 
     Grid,
     Typography
 } from '@mui/material';
 
 import Master from './Master'
 
-import { successMessage, errorMessage } from '../../utils';
-import { useNavigate, useLocation } from "react-router-dom";
+import {  errorMessage } from '../../utils';
+import { useNavigate,  } from "react-router-dom";
 
 import { Lodder } from '../../components/Lodder';
 import OtpReceive from '../../components/OtpReceive';
@@ -32,8 +32,7 @@ const OtpSend = () => {
     const [mobile, setMobile] = useState(null);
     const [open, setOpen] = useState(false);
     const [form1, setForm1] = useState(true)
-    const [form2, setForm2] = useState(false)
-    const [form3, setForm3] = useState(false)
+  
    
     // console.log(location);
     const formik = useFormik({
@@ -69,6 +68,7 @@ const OtpSend = () => {
                     return result.json()
                 })
                 .then(data => {
+                   console.log(data)
                     if (data.error) {
                         setOpen(false)
                         errorMessage(data.error)
