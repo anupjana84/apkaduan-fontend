@@ -76,7 +76,7 @@ const AllDistrict = () => {
     }
     ///get dist list
     const allDist = () => {
-        fetch(`/api/admin/category/all?page=${page}`, {
+        fetch(`/api/admin/getAllDistForAdmin?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -86,6 +86,7 @@ const AllDistrict = () => {
                 return res.json()
             })
             .then((result) => {
+               
                 if (result.data && result.data.length > 0) {
                     setLodding(false)
                     setCategory(result.data)

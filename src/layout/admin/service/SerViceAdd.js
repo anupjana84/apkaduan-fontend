@@ -12,31 +12,36 @@ import {
 import Layout from '../Layout';
 import { errorMessage, successMessage } from '../../../utils';
 import { Link } from 'react-router-dom'
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 
 import PreviewImage from '../../../components/PreviewImage';
 import AddIcon from '@mui/icons-material/Add';
+import Fab from '@mui/material/Fab'
 
 
 import axios from 'axios';
 
 
 const SerViceAdd = () => {
-    document.title ="APKA DUKAN | SERVICE"
+    document.title = "APKA DUKAN | SERVICE"
 
     const fileRaf = useRef(null)
-    const[preview,setPreview]=useState(null)
+    const [preview, setPreview] = useState(null)
+    const [errorMess, setError] = useState(null)
+    const [imageLoad, setImageLoad] = useState(false)
+
 
     // const [file, setSelectedFile] = React.useState({
     //     file: undefined,
     //     previewURI: undefined
     // });
-const filedd=(file)=>{
-    const reader =new FileReader()
-    reader.readAsDataURL(file)
-    reader.onloadend=()=>{
-        setPreview(reader.result)
+    const filedd = (file) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onloadend = () => {
+            setPreview(reader.result)
+        }
     }
-}
 
 
 
@@ -53,8 +58,10 @@ const filedd=(file)=>{
                 .required(
                     'Title is required'),
             img: Yup.mixed()
-                .test("fileSize", "File size too large, max file size is 1 Mb", (file) =>
-                    file ? file.size <= 1000000 : true
+                .required(
+                    'image is required')
+                .test("fileSize", "File size too large, max file size is 0.5 Mb", (file) =>
+                    file ? file.size <= 500000 : true
                 )
                 .test("fileType", "Incorrect file type", (file) =>
                     file
@@ -63,8 +70,8 @@ const filedd=(file)=>{
                 )
 
         }),
-        onSubmit: (value, { resetForm }) => {
-           // console.log(value.img);
+        onSubmit: (value, { resetForm, setFieldValue }) => {
+            // console.log(value.img);
             //e.preventDefault();
             const formData = new FormData();
             formData.append('photo', value.img);
@@ -117,6 +124,36 @@ const filedd=(file)=>{
             //  }).catch(err => console.log(err))
         }
     });
+
+
+    const chackImage = (file) => {
+        console.log(file)
+        if (!["image/png", "image/jpg", "image/jpeg"].includes(file.type)) {
+            errorMessage("File Type Only jpeg, png,")
+            setPreview(null)
+
+        } else {
+            if (file.size > 500000) {
+                errorMessage("File size too large, max file size is 0.5 Mb")
+                setPreview(null)
+
+            } else {
+                setError(null)
+                setImageLoad(true)
+
+                const reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onloadend = () => {
+                    setPreview(reader.result)
+                }
+
+            }
+
+        }
+
+
+
+    }
     return (
         <Layout>
             <Box
@@ -149,7 +186,7 @@ const filedd=(file)=>{
                 }}
             >
                 <Container maxWidth="sm" sx={{ border: 1, borderRadius: 5, borderColor: 'secondary.main' }}>
-
+                    <p>{formik.touched.img && formik.errors.img}</p>
                     <form onSubmit={formik.handleSubmit}>
                         <Box sx={{ my: 3 }}>
                             <Typography
@@ -169,13 +206,13 @@ const filedd=(file)=>{
                             label=" Enter Title"
                             margin="normal"
                             name="name"
-                            //onBlur={formik.handleBlur}
+                            onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             type="text"
                             value={formik.values.name}
                             variant="outlined"
                         />
-                        <input
+                        {/* <input
                             name="img"
                             //onBlur={formik.handleBlur}
                             hidden
@@ -189,55 +226,58 @@ const filedd=(file)=>{
                             type="file"
                             style={{ paddingTop: 10 }}
                             accept=".png,.jpg,.jpeg"
-                        />
-
-                        {formik.errors.img && formik.touched.img ? (
-                            <Typography
-                                color="textPrimary"
-                                variant="h6"
-                            >
-                                {JSON.stringify(formik.errors.img)}
-                            </Typography>
+                        /> */}
 
 
-
-                        ) : (formik.values.img &&
-                            <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-                                <img src={preview} alt='preview' width="75px" height="75px" style={{borderRadius:'10px',display:'inline-block'}}/>
-                            </Box>
-
-                        )}
-
-                        <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
-                            <Button
-
-                                onClick={() => fileRaf.current.click()}
-                                startIcon={<AddIcon />}
-                                size="large"
-                                type="submit"
-                                sx={{ backgroundColor: '#9b06d1', color: "white", mt: 1 }}
-                                variant="contained"
-
-
-                            >
-                                UPLOAD PHOTO
-                            </Button>
-                        </Box>
                         <Box
                             sx={{
-                                alignItems: 'center',
-                                display: 'flex',
-                                ml: -1
+                                display: "flex", justifyContent: "space-between", flexDirection: { xs: 'column', md: 'row' }, alignItems: "center"
                             }}
+                            noValidate
+                            autoComplete="off"
                         >
 
 
+                            <label htmlFor="upload-photo">
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="upload-photo"
+                                    name="img"
+                                    type="file"
+                                    onBlur={formik.handleBlur}
+
+                                    onChange={(e) => {
+                                        chackImage(e.target.files[0])
+                                        formik.setFieldValue('img', e.target.files[0])
+                                    }
+                                    }
+                                />
+                                <Fab
+                                    color="secondary"
+                                    size="small"
+                                    component="span"
+                                    aria-label="add"
+                                    variant="extended"
+                                >
+                                    <AddIcon /> Upload photo
+                                </Fab>
+                            </label>
+
+                            <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
+                                {preview ? (
+                                    <img src={preview} alt='preview' width="75px" height="75px" style={{ borderRadius: '10px', display: 'inline-block' }} />
+                                ) : (<AccountCircleTwoToneIcon
+                                    style={{ height: 70, width: 70 }}
+                                />)}
+                            </Box>
                         </Box>
+
 
                         <Box sx={{ py: 2 }}>
                             <Button
                                 color="primary"
-                                disabled={formik.isSubmitting}
+                                disabled={!formik.isValid || !formik.dirty}
                                 fullWidth
                                 size="large"
                                 type="submit"

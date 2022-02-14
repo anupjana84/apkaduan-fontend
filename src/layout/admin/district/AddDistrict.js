@@ -77,7 +77,7 @@ const AddDistrict = () => {
         }
     });
     const getState = () => {
-        fetch(`/api/admin/getState`, {
+        fetch(`/api/getStateForRegister`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ const AddDistrict = () => {
                             variant="outlined"
                         />
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                            <InputLabel id="demo-simple-select-label">State</InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
 

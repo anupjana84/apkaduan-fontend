@@ -11,7 +11,7 @@ import TableHead from '@mui/material/TableHead'
 import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import { Link } from 'react-router-dom'
-import { API } from '../../../utils/api'
+
 import Pagination from '@mui/material/Pagination'
 import { css } from '@emotion/react'
 import CircleLoader from 'react-spinners/SyncLoader'
@@ -73,8 +73,8 @@ const AllState = () => {
         setRowsPerPage(+event.target.value)
         setPage(0)
     }
-    const allCategory = () => {
-        fetch(`/api/admin/category/all?page=${page}`, {
+    const allState = () => {
+        fetch(`/api/admin/allState?page=${page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ const AllState = () => {
             .catch((err) => console.log(err))
     }
     useEffect(() => {
-        allCategory()
+        allState()
     }, [page])
 
     return (
@@ -179,7 +179,7 @@ const AllState = () => {
                                                                     {i + 1}
                                                                 </TableCell>
                                                                 <TableCell align="left" colSpan={3}>
-                                                                    {item.title}
+                                                                    {item.name}
                                                                 </TableCell>
                                                                 <TableCell a3lign="left">Details</TableCell>
                                                             </TableRow>

@@ -143,8 +143,8 @@ const Layout=({children})=> {
             </Link>
           </Typography>
           
-          <Typography variant="h6" sx={{marginRight:'5px'}}  >
-          APKA DUKAN@gmail.com
+          <Typography  sx={{marginRight:'5px',fontSize:{ xs: '15px', md: '25px' }}}  >
+          APKA @gmail.com
           </Typography>
           <Button variant="contained" sx={{backgroundImage:"linear-gradient(to right, #56CCF2 0%, #2F80ED  51%, #56CCF2  100%)"}} >Logout</Button>
          

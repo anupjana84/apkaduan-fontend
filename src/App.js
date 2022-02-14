@@ -44,6 +44,7 @@ function App() {
         <Route path="/allDistrict" element={<AllDistrict />} />
         <Route path="/otpSend" element={<OtpSend />} />
         <Route path="/registerSeller" element={<RegisterSeller />} />
+        <Route path="/addState" element={<AddState />} />
         {/* ==========dist route============== */}
         <Route path='*' element={<DistAdminRoute/>}>
 
