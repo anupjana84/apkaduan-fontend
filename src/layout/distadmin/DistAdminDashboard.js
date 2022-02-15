@@ -13,7 +13,8 @@ import {
     OutlinedInput,
     IconButton,
     FormControl,
-    InputLabel
+    InputLabel,
+    Fab
 } from '@mui/material';
 
 import { Link } from 'react-router-dom'
@@ -23,11 +24,9 @@ import axios from 'axios';
 import { Visibility, VisibilityOff } from '@mui/icons-material/';
 import { errorMessage } from '../../utils';
 import Select from 'react-select';
-const optionss = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-];
+import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
+import AddIcon from '@mui/icons-material/Add';
+
 const styles = {
     fontSize: 14,
     color: 'blue',
@@ -35,20 +34,26 @@ const styles = {
 }
 const options = ['Option 1', 'Option 2'];
 const DistAdminDashboard = () => {
-    // const formik1 = useFormik()
-    const [selectedOption, setSelectedOption] = useState(null);
-    // //console.log(formik1)
-
+    
     // document.querySelectorAll(" p * div ")
-    const [stateName, setStateName] = useState([])
-    const [value, setValue] = React.useState(null);
-    const [value1, setValue1] = React.useState();
-    const [inputValue, setInputValue] = React.useState('');
-    const [nameVal, setNameChenge] = React.useState('');
+   const[stateName, setStateName]=useState(null)
+
+   const[distName, setDistName]=useState('')
+    const [stateNameAll, setStateNameAll] = useState([])
+   const [getDistall, setGetDistAll] = useState([])
     const [passwordShow, setPasswordShow] = React.useState(false);
-    const [getDist, setGetDist] = useState([])
-
-
+    
+    const [previewAadhar, setPreviewAadhar] = useState(null)
+    const [previewAadharLoad, setPreviewAadharLoad] = useState(false)
+    const [previewPan, setPreviewPan] = useState(null)
+    const [previewPanLoad, setPreviewPanLoad] = useState(false)
+    const [previewProfile, setPreviewProfile] = useState(null)
+    const [previewProfileLoad, setPreviewPrifileLoad] = useState(false)
+    const [errorMess, setError] = useState(null)
+    const [value, setValue] = React.useState(null);
+    const [inputValue, setInputValue] = React.useState('');
+    const [value1, setValue1] = React.useState(null);
+    const [inputValue1, setInputValue1] = React.useState('');
     const getState = () => {
         fetch(`/api/getStateForRegister`, {
             method: 'GET',
@@ -68,8 +73,8 @@ const DistAdminDashboard = () => {
                             value: item._id
                         }
                     })
-
-                    setStateName(opt)
+                    setValue(opt[0])
+                    setStateNameAll(opt)
 
                 }
 
@@ -77,8 +82,8 @@ const DistAdminDashboard = () => {
             .catch((err) => console.log(err))
     }
     const getAlldist = (value) => {
-        console.log(value.value)
-
+        // setStateName(value.value)
+        // setDistName('')
         fetch(`/api/getDistrictByState`, {
             method: "POST",
             headers: {
@@ -90,7 +95,7 @@ const DistAdminDashboard = () => {
         }).then((res) => {
             return res.json()
         }).then(result => {
-            console.log(result);
+            console.log(result,'result');
 
             if (result.data && result.data.length > 0) {
                 const opt = result.data.map(item => {
@@ -100,7 +105,7 @@ const DistAdminDashboard = () => {
                     }
                 })
 
-                setGetDist(opt)
+                setGetDistAll(opt)
 
             }
             //setGetDist(result.data);
@@ -108,6 +113,7 @@ const DistAdminDashboard = () => {
             .catch(err => console.log(err))
 
     }
+    
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -116,6 +122,11 @@ const DistAdminDashboard = () => {
             pan: '',
             pin: '',
             password: '',
+            state: '',
+            dist:'',
+            aadharcard:null,
+            pancard:null,
+            profile:null,
 
 
         },
@@ -126,32 +137,48 @@ const DistAdminDashboard = () => {
                     'Must be a valid email')
                 .max(255)
                 .required(
-                    'Email is required')
-
-            // .test(
-            //     // Msg
-            //     async (email) => {
-            //         // Res from backend will be flag at res.data.success, true for 
-            //         // username good, false otherwise
-            //         const data = await axios.post(
-            //             "/api/checkEmail",
-            //             { email: email }
-            //         )
-            //         console.log(data);
-            //         if (data.data.success == true) {
-            //             resolve(true)
-            //         }
-            //         reject(true)
-            //     }),
-            // .test('Unique Email', 'Email already in use',
-            //     function (value) {
-            //         return new Promise((resolve, reject) => {
-            //             axios.post("/api/checkEmail", { 'email': value })
-            //                 .then(res => { if (res.data.msg === 'Username already been taken') { resolve(false) } resolve(true) })
-            //         })
-            //     }
-            // ),
-            ,
+                    'Email is required'),
+            state: Yup
+                .string()
+                .required(
+                    'State is required'),
+            dist: Yup
+                .string()
+                .required(
+                    'State is required'),
+            aadharcard: Yup.mixed()
+                .required(
+                    'image is required')
+                .test("fileSize", "File size too large, max file size is 0.5 Mb", (file) =>
+                    file ? file.size <= 500000 : true
+                )
+                .test("fileType", "Incorrect file type", (file) =>
+                    file
+                        ? ["image/png", "image/jpg", "image/jpeg"].includes(file.type)
+                        : true
+                ),
+            pancard: Yup.mixed()
+                .required(
+                    'image is required')
+                .test("fileSize", "File size too large, max file size is 0.5 Mb", (file) =>
+                    file ? file.size <= 500000 : true
+                )
+                .test("fileType", "Incorrect file type", (file) =>
+                    file
+                        ? ["image/png", "image/jpg", "image/jpeg"].includes(file.type)
+                        : true
+                ),
+            profile: Yup.mixed()
+                .required(
+                    'image is required')
+                .test("fileSize", "File size too large, max file size is 0.5 Mb", (file) =>
+                    file ? file.size <= 500000 : true
+                )
+                .test("fileType", "Incorrect file type", (file) =>
+                    file
+                        ? ["image/png", "image/jpg", "image/jpeg"].includes(file.type)
+                        : true
+                ),
             name: Yup
                 .string()
                 .max(255)
@@ -179,17 +206,7 @@ const DistAdminDashboard = () => {
                 .max(16)
                 .required(
                     'Password No is required'),
-            // img: Yup.mixed()
-            //     .required(
-            //         'image is required')
-            //     .test("fileSize", "File size too large, max file size is 0.5 Mb", (file) =>
-            //         file ? file.size <= 500000 : true
-            //     )
-            //     .test("fileType", "Incorrect file type", (file) =>
-            //         file
-            //             ? ["image/png", "image/jpg", "image/jpeg"].includes(file.type)
-            //             : true
-            //     )
+           
 
         }),
         onSubmit: (value, { resetForm, setFieldValue, isValid, dirty }) => {
@@ -257,14 +274,81 @@ const DistAdminDashboard = () => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-    const changeHandler = value => {
-        console.log(value, 'ooo'); // value should be here
-    }
+
     useEffect(() => {
         getState()
 
-
     }, [])
+    //check Aadhar Card
+    const chackAadhar = (file) => {
+        console.log(file)
+        if (!["image/png", "image/jpg", "image/jpeg"].includes(file.type)) {
+            errorMessage("File Type Only jpeg, png,")
+            setPreviewAadhar(null)
+
+        } else {
+            if (file.size > 500000) {
+                errorMessage("File size too large, max file size is 0.5 Mb")
+                setPreviewAadhar(null)
+            } else {
+                setError(null)
+                setPreviewAadharLoad(true)
+
+                const reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onloadend = () => {
+                    setPreviewAadhar(reader.result)
+                }
+            }
+        }
+    }
+    //check Pan Card
+    const chackPan = (file) => {
+        console.log(file)
+        if (!["image/png", "image/jpg", "image/jpeg"].includes(file.type)) {
+            errorMessage("File Type Only jpeg, png,")
+            setPreviewPan(null)
+
+        } else {
+            if (file.size > 500000) {
+                errorMessage("File size too large, max file size is 0.5 Mb")
+                setPreviewPan(null)
+            } else {
+                setError(null)
+                setPreviewPanLoad(true)
+
+                const reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onloadend = () => {
+                    setPreviewPan(reader.result)
+                }
+            }
+        }
+    }
+     //check Profile Image
+    const chackProfile = (file) => {
+        // console.log(file)
+        if (!["image/png", "image/jpg", "image/jpeg"].includes(file.type)) {
+            errorMessage("File Type Only jpeg, png,")
+            setPreviewProfile(null)
+
+        } else {
+            if (file.size > 500000) {
+                errorMessage("File size too large, max file size is 0.5 Mb")
+                setPreviewProfile(null)
+            } else {
+                setError(null)
+                setPreviewPrifileLoad(true)
+
+                const reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onloadend = () => {
+                    setPreviewProfile(reader.result)
+                    
+                }
+            }
+        }
+    }
     return (
         <DistLayout>
             <Box
@@ -303,7 +387,7 @@ const DistAdminDashboard = () => {
                                 color="textPrimary"
                                 variant="h4"
                             >
-                                Add Your Details{value}
+                                Add Your Details
                             </Typography>
                         </Box>
                         {/* =================name email======== */}
@@ -345,7 +429,6 @@ const DistAdminDashboard = () => {
                                 variant="outlined"
 
                             />
-
                         </Box>
                         {/* =================name email======== */}
 
@@ -408,7 +491,7 @@ const DistAdminDashboard = () => {
                                 error={Boolean(formik.touched.pin && formik.errors.pin)}
                                 fullWidth
                                 helperText={formik.touched.pin && formik.errors.pin}
-                                label=" Enter PIN"
+                                label=" Postal Code"
                                 margin="normal"
                                 name="pin"
                                 onBlur={formik.handleBlur}
@@ -425,20 +508,7 @@ const DistAdminDashboard = () => {
                                 sx={{ marginRight: "5px" }}
                                 value={formik.values.pin}
                             />
-                            {/* <TextField
-                                size="small"
-                                error={Boolean(formik.touched.password && formik.errors.password)}
-                                fullWidth
-                                helperText={formik.touched.password && formik.errors.password}
-                                label=" Enter password"
-                                margin="normal"
-                                name="pan"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.password}
-                                onBlur={formik.handleBlur}
-                                onChange={formik.handleChange}
-                            /> */}
+                         
                             <FormControl fullWidth sx={{ height: '32px', alignSelf: 'center' }} >
                                 <InputLabel htmlFor="standard-adornment-password">
                                     Password
@@ -468,7 +538,6 @@ const DistAdminDashboard = () => {
                                             </IconButton>
                                         </InputAdornment>
                                     }
-
                                 />
                             </FormControl>
                         </Box>
@@ -480,52 +549,211 @@ const DistAdminDashboard = () => {
                                 marginTop: { xs: '10px', md: '' }
                             }}
                             noValidate
-                            autoComplete="off"
-                        >
-                            <Box sx={{
+                            autoComplete="off" >
+                            {/* <Box sx={{
                                 width: { xs: '100%', md: '49.5%' }, marginTop: {
                                     xs: "5px", md: ''
                                 }
                             }}>
                                 <Select
+                                    value={formik.values.state}
                                     style={styles.select}
-
-                                    onChange={(e) => { getAlldist(e) }}
-                                    options={stateName}
+                                    placeholder={"Select Your State"}
+                                    onChange={(e) => { getAlldist(e)
+                                    formik.setFieldValue('state', e.value)
+                                    }}
+                                    options={stateNameAll}
                                 />
-
+                                {formik.touched.state && formik.errors.state? <span>{formik.touched.state && formik.errors.state}</span>:null}
                             </Box>
                             <Box sx={{
                                 width: { xs: '100%', md: '49.5%' }, marginTop: {
                                     xs: "5px", md: ''
                                 }
                             }}>
-
                                 <Select
+                                    value={formik.values.dist}
+                                    placeholder={"Select Your District"}
                                     style={styles.select}
-
-                                    onChange={(e) => { console.log(e) }}
-                                    options={getDist}
+                                    onChange={(e) => { setDistName(e.value)
+                                        formik.setFieldValue('dist', e.value)
+                                    }}
+                                    options={getDistall}
                                 />
-
-
-                            </Box>
-
-
-                            {/* <Autocomplete
+                                {formik.touched.dist && formik.errors.dist? <span>{formik.touched.dist && formik.errors.dist}</span>:null}
+                            </Box> */}
+                             <Autocomplete
+                                size='small'
+                                
                                 onChange={(event, newValue) => {
-                                    console.log(event, newValue)
-                                    //setValue(newValue);
+                                    getAlldist(newValue)
+                                    formik.setFieldValue('state',newValue.value)
+                                    formik.setFieldValue('dist','')
+                                    setValue1('');
+                                setValue(newValue);
                                 }}
-
-                                options={getDist}
-                                fullWidth
-                                sx={{ marginRight: "5px" }}
-                                renderInput={(params) => <TextField fullWidth {...params} label="District Name" />}
-                            /> */}
-
+                                inputValue={inputValue}
+                                onInputChange={(event, newInputValue) => {
+                                setInputValue(newInputValue);
+                                }}
+                                id="controllable-states-demo"
+                                options={stateNameAll}
+                               fullWidth
+                               sx={{ marginRight: "5px" }}
+                                renderInput={(params) => <TextField {...params} label="Select State Name" />}
+                        />
+                             <Autocomplete
+                                size='small'
+                                value={value1}
+                                onChange={(event, newValue) => {
+                                    formik.setFieldValue('dist',newValue.value)
+                                setValue1(newValue);
+                                }}
+                                inputValue={inputValue1}
+                                onInputChange={(event, newInputValue) => {
+                                setInputValue1(newInputValue);
+                                }}
+                                id="controllable-states-demo"
+                                options={getDistall}
+                               fullWidth
+                                renderInput={(params) => <TextField {...params} label="Select District Name " />}
+                        />
                         </Box>
                         {/* =============== state dist */}
+                        {/* =============== Aadhar */}
+                        <Box
+                            sx={{
+                                display: "flex", justifyContent: "space-between", flexDirection: { xs: 'column', md: 'row' }, alignItems: "center",
+                                marginTop:{xs: '5px', md: '8px'}
+                            }}
+                            noValidate
+                            autoComplete="off" >
+                       
+
+
+                            <label htmlFor="aadhar">
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="aadhar"
+                                    name="aadharcard"
+                                    type="file"
+                                    onBlur={formik.handleBlur}
+
+                                    onChange={(e) => {
+                                        chackAadhar(e.target.files[0])
+                                        formik.setFieldValue('aadharcard', e.target.files[0])
+                                    }
+                                    }
+                                />
+                                <Fab
+                                    color="secondary"
+                                    size="small"
+                                    component="span"
+                                    aria-label="add"
+                                    variant="extended"
+                                >
+                                    <AddIcon /> Upload Aadhar
+                                </Fab>
+                            </label>
+
+                            <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center',
+                        marginTop:{xs: '5px', md: '0px' } }}>
+                                {previewAadharLoad ? (
+                                    <img src={previewAadhar} alt='preview' width="75px" height="75px" style={{ borderRadius: '10px', display: 'inline-block' }} />
+                                ) : (<AccountCircleTwoToneIcon
+                                    style={{ height: 70, width: 70 }}
+                                />)}
+                            </Box>
+                        </Box>
+                        {/* =============== Aadhar */}
+                        {/* =============== Pan */}
+                        <Box
+                            sx={{
+                                display: "flex", justifyContent: "space-between", flexDirection: { xs: 'column', md: 'row' }, alignItems: "center",
+                                marginTop:{xs: '0px', md: '8px'}
+                            }}
+                            noValidate
+                            autoComplete="off" >
+                            <label htmlFor="pan">
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="pan"
+                                    name="pan"
+                                    type="file"
+                                    onBlur={formik.handleBlur}
+
+                                    onChange={(e) => {
+                                        chackPan(e.target.files[0])
+                                        formik.setFieldValue('pancard', e.target.files[0])
+                                    }
+                                    }
+                                />
+                                <Fab
+                                    color="secondary"
+                                    size="small"
+                                    component="span"
+                                    aria-label="add"
+                                    variant="extended"
+                                >
+                                    <AddIcon /> Upload Pan
+                                </Fab>
+                            </label>
+
+                            <Box sx={{marginTop:{xs: '5px', md: '0px' }, display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
+                                {previewPanLoad ? (
+                                    <img src={previewPan} alt='preview' width="75px" height="75px" style={{ borderRadius: '10px', display: 'inline-block' }} />
+                                ) : (<AccountCircleTwoToneIcon
+                                    style={{ height: 70, width: 70 }}
+                                />)}
+                            </Box>
+                        </Box>
+                        {/* =============== Pan */}
+                        {/* =============== Profile */}
+                        <Box
+                            sx={{
+                                display: "flex", justifyContent: "space-between", flexDirection: { xs: 'column', md: 'row' }, alignItems: "center",
+                                marginTop:{xs: '5px', md: '8px'}
+                            }}
+                            noValidate
+                            autoComplete="off" >
+                            <label htmlFor="profile">
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="profile"
+                                    name="profile"
+                                    type="file"
+                                    onBlur={formik.handleBlur}
+
+                                    onChange={(e) => {
+                                        chackProfile(e.target.files[0])
+                                        formik.setFieldValue('profile', e.target.files[0])
+                                    }
+                                    }
+                                />
+                                <Fab
+                                    color="secondary"
+                                    size="small"
+                                    component="span"
+                                    aria-label="add"
+                                    variant="extended"
+                                >
+                                    <AddIcon /> Profile Image
+                                </Fab>
+                            </label>
+
+                            <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center',
+                            marginTop:{xs: '5px', md: '0px' }}}>
+                                {previewProfileLoad ? (
+                                    <img src={previewProfile} alt='preview' width="75px" height="75px" style={{ borderRadius: '10px', display: 'inline-block' }} />
+                                ) : (<AccountCircleTwoToneIcon
+                                    style={{ height: 70, width: 70 }}
+                                />)}
+                            </Box>
+                        </Box>
+                        {/* =============== Profile */}
 
                         <Box sx={{ display: 'flex', flexDirection: "row", justifyContent: 'center', alignItems: 'center' }}>
                         </Box>
