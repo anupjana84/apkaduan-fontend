@@ -17,12 +17,13 @@ import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 import PreviewImage from '../../../components/PreviewImage';
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
-
+import { useNavigate } from "react-router-dom";
 
 import axios from 'axios';
 
 
 const SerViceAdd = () => {
+    const navigate = useNavigate();
     document.title = "APKA DUKAN | SERVICE"
 
     const fileRaf = useRef(null)
@@ -43,7 +44,28 @@ const SerViceAdd = () => {
         }
     }
 
+    const chackImage = (file) => {
+        //console.log(file)
+        if (!["image/png", "image/jpg", "image/jpeg"].includes(file.type)) {
+            errorMessage("File Type Only jpeg, png,")
+            setPreview(null)
 
+        } else {
+            if (file.size > 500000) {
+                errorMessage("File size too large, max file size is 0.5 Mb")
+                setPreview(null)
+
+            } else {
+                setError(null)
+                setImageLoad(true)
+                const reader = new FileReader()
+                reader.readAsDataURL(file)
+                reader.onloadend = () => {
+                    setPreview(reader.result)
+                }
+            }
+        }
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -70,12 +92,14 @@ const SerViceAdd = () => {
                 )
 
         }),
-        onSubmit: (value, { resetForm, setFieldValue }) => {
+        onSubmit:   async (value, { resetForm, setFieldValue }) => {
             // console.log(value.img);
             //e.preventDefault();
+            console.log(value.img)
             const formData = new FormData();
             formData.append('photo', value.img);
-            formData.append('name', value.name);
+            formData.append('name',  value.name);
+             console.log(formData)
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data'
@@ -83,19 +107,35 @@ const SerViceAdd = () => {
             };
             axios.post("/api/servicesave", formData, config)
                 .then((response) => {
-                    console.log(response.data);
-                    // alert(response.data.error);
+                    successMessage('Save successfull')
+                       
+                    setFieldValue('photo','')
+                    setImageLoad(false)
                     resetForm({})
-                }).catch((err) => {
-                    console.log(err);
-                });
+                    setPreview(null)
+                    // console.log(response.data.error,'ddddd');
+                    // if (response.data.error) {
+                    //     errorMessage(response.data.error)
+                        
+                    // }else{
+                       
+                        
+                    // }
+                    // alert(response.data.error);
+                  
+                }).catch(
+                    (err)=> {
+
+                        errorMessage(err.response.data.error)
+                    }
+                  )
 
             // console.log(value);
-            // fetch(`/servicesave`, {
+            // fetch(`/api/servicesave`, {
             //     method: "POST",
             //     headers: {
 
-            //         'content-type': 'multipart/form-data'
+            //         'Content-type': 'multipart/form-data'
             //     },
 
             //     body: formData
@@ -126,34 +166,7 @@ const SerViceAdd = () => {
     });
 
 
-    const chackImage = (file) => {
-        console.log(file)
-        if (!["image/png", "image/jpg", "image/jpeg"].includes(file.type)) {
-            errorMessage("File Type Only jpeg, png,")
-            setPreview(null)
-
-        } else {
-            if (file.size > 500000) {
-                errorMessage("File size too large, max file size is 0.5 Mb")
-                setPreview(null)
-
-            } else {
-                setError(null)
-                setImageLoad(true)
-
-                const reader = new FileReader()
-                reader.readAsDataURL(file)
-                reader.onloadend = () => {
-                    setPreview(reader.result)
-                }
-
-            }
-
-        }
-
-
-
-    }
+    
     return (
         <Layout>
             <Box
@@ -187,7 +200,7 @@ const SerViceAdd = () => {
             >
                 <Container maxWidth="sm" sx={{ border: 1, borderRadius: 5, borderColor: 'secondary.main' }}>
                     <p>{formik.touched.img && formik.errors.img}</p>
-                    <form onSubmit={formik.handleSubmit}>
+                    <form onSubmit={formik.handleSubmit} enctype="multipart/form-data">
                         <Box sx={{ my: 3 }}>
                             <Typography
                                 color="textPrimary"

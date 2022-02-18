@@ -22,10 +22,11 @@ import * as Yup from 'yup';
 
 import axios from 'axios';
 import { Visibility, VisibilityOff } from '@mui/icons-material/';
-import { errorMessage } from '../../utils';
+import { errorMessage,successMessage } from '../../utils';
 import Select from 'react-select';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone'
 import AddIcon from '@mui/icons-material/Add';
+import { isAutheticated } from '../../helper';
 
 const styles = {
     fontSize: 14,
@@ -190,19 +191,20 @@ const DistAdminDashboard = () => {
                 .max(16)
                 .min(16)
                 .required(
-                    'Aadhar is required'),
+                    'Aadhar are required and 16 Digit required'),
             pan: Yup
                 .string()
                 .max(20)
                 .required(
-                    'Pan No is required'),
+                    'Pan No is  required'),
             pin: Yup
                 .string()
                 .max(6)
                 .required(
-                    'PIN No is required'),
+                    'PIN No are required and 6 Digit '),
             password: Yup
                 .string()
+                .min(6)
                 .max(16)
                 .required(
                     'Password No is required'),
@@ -210,61 +212,43 @@ const DistAdminDashboard = () => {
 
         }),
         onSubmit: (value, { resetForm, setFieldValue, isValid, dirty }) => {
-            //console.log(value, formik.isValid, formik.dirty);
-            // e.preventDefault();
-            // const formData = new FormData();
-            // formData.append('name', value.name);
-            // formData.append('name', value.img);
+           
+             const {user,token}=isAutheticated()
+          
+            const {name,email,aadhar,pan,pin,password,state,dist,aadharcard,pancard,profile}=value
+          
+             const formData = new FormData();
+            formData.append('name', value.name);
+            formData.append('email', value.email);
+            formData.append('aadhar', value.aadhar);
+            formData.append('pan', value.pan);
+            formData.append('pin', value.pin);
+            formData.append('password', value.password);
+            formData.append('state', value.state);
+            formData.append('dist', value.dist);
+            formData.append('aadharcard', value.aadharcard);
+            formData.append('pancard', value.pancard);
+            formData.append('profile', value.profile);
+            formData.append('_id',user._id);
+           
             const config = {
                 headers: {
-                    'content-type': 'multipart/form-data'
+                    'content-type': 'multipart/form-data',
+                    Authorization:`Bearer ${token}`
                 }
             };
-            // axios.post("/api/servicesave", formData, config)
-            //     .then((response) => {
-            //         console.log(response.data);
-            //         // alert(response.data.error);
-            //         resetForm({})
-            //     }).catch((err) => {
-            //         console.log(err);
-            //     });
+            axios.post("/api/dist/distAdminProfileInsert", formData, config)
+                .then((response) => {
+                   
+                     console.log(response.message);
+                    successMessage('Add Successfully')
+                    // alert(response.data.error);
+                    resetForm({})
+                }).catch((err) => {
+                    errorMessage(err.response.data.error)
+                });
 
-            // console.log(value);
-            fetch(`/api/checkEmail`, {
-                method: "POST",
-                headers: {
-
-                    'content-type': 'application/json'
-                },
-
-                body: JSON.stringify({ email: value.email })
-            }).then((res) => {
-                return res.json()
-            }).then(data => {
-                console.log(data)
-                if (data.error) {
-                    console.log(data.error)
-                    // errorMessage(data.error)
-                    // resetForm({
-                    // })
-                    errorMessage(data.error)
-
-                    // setFieldValue('email', 'aaaaa@gmail.com')
-                    // //console.log(value.email);
-                    // resetForm(!formik.isValid)
-                    // resetForm(!formik.dirty)
-                    //console.log(value.email);
-                    // formik.isValid = false
-                    // formik.dirty = false
-                } else {
-                    //successMessage('Add Successfully')
-                    // resetForm({})
-                    console.log("data")
-
-
-                }
-
-            }).catch(err => console.log(err))
+          
         }
     });
     const handleClickShowPassword = () => {
@@ -349,6 +333,29 @@ const DistAdminDashboard = () => {
             }
         }
     }
+
+    const save=()=>{
+        const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjAyNzg5Yjc2ZjZlZTJmZjQ4ZWIzNDYiLCJyb2xlIjoiZGlzdGFkbWluIiwiaWF0IjoxNjQ1MDEzOTkyLCJleHAiOjE2NDUwMTM5OTN9.2Je2vBR9Y8-hfITSC0kr8lJt1AM3TWzLjkJfNkqE7IU"
+        fetch(`/api/otpReceiveDistAdmin`, {
+            method: "POST",
+            headers: {
+
+                'Content-type': 'application/json',
+                Authorization:`Bearer ${token}`
+            },
+
+            body: JSON.stringify({ email: "value.email" })
+        }).then((res) => {
+            return res.json()
+        }).then(data => {
+            console.log(data,'data');
+        }
+        )
+        .catch((err)=>{
+            console.log(err,'err');
+        })
+
+    }
     return (
         <DistLayout>
             <Box
@@ -365,9 +372,12 @@ const DistAdminDashboard = () => {
                 <Link to="/dist/AdminDashboard">
                     <Button sx={{ backgroundImage: "linear-gradient(to right, #f857a6 0%, #ff5858  51%, #f857a6  100%)" }} variant="contained">Dashboard</Button>
                 </Link>
-                <Button variant="contained" >
-                    Home
+                <Button
+                size='small'
+                sx={{ backgroundImage: "linear-gradient(to right, #f857a6 0%, #ff5858  51%, #f857a6  100%)" }} variant="contained" >
+                    Partner
                 </Button>
+                
 
             </Box>
 
@@ -779,6 +789,7 @@ const DistAdminDashboard = () => {
                         </Box>
                     </form>
                 </Container>
+                
             </Box>
 
         </DistLayout>
