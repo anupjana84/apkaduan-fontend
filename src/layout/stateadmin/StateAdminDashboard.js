@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useFormik } from 'formik';
-import DistLayout from './DistLayout'
+import StateLayout from './StateLayout'
 import {
     Box,
     Button,
@@ -36,7 +36,7 @@ const styles = {
     width: '100%'
 }
 const options = ['Option 1', 'Option 2'];
-const DistAdminDashboard = () => {
+const StateAdminDashboard = () => {
     const navigate = useNavigate();
     
     // document.querySelectorAll(" p * div ")
@@ -244,7 +244,7 @@ const DistAdminDashboard = () => {
             const config = {
                 headers: {
                     'content-type': 'multipart/form-data',
-                    Authorization:`Bearer ${token}`
+                    Authorization:`Bearer ${isAutheticated().token}`
                 }
             };
             axios.post("/api/dist/distAdminProfileInsert", formData, config)
@@ -260,7 +260,7 @@ const DistAdminDashboard = () => {
                
                     successMessage('Add Successfully')
                     setTimeout(() => {
-                        navigate('/')
+                        navigate('/state/subcription')
                     }, 1500);
                   
                     setPreviewProfile(null)
@@ -400,7 +400,7 @@ const DistAdminDashboard = () => {
 
     }
     return (
-        <DistLayout>
+        <StateLayout>
             {!isAutheticated().user.email?(
             <>
             <Box
@@ -414,12 +414,12 @@ const DistAdminDashboard = () => {
 
                 }}
             >
-                <Link to="/dist/AdminDashboard">
+                <Link to="/state/dashboard">
                     <Button sx={{ backgroundImage: "linear-gradient(to right, #f857a6 0%, #ff5858  51%, #f857a6  100%)" }} variant="contained">Dashboard</Button>
                 </Link>
                 <Link to="/dist/AdminDashboard">
                 <Button component={NavLink}
-                to="/dist/AdminDashboard"
+                to="/state/dashboard"
                
                 sx={{ backgroundImage: "linear-gradient(to right, #f857a6 0%, #ff5858  51%, #f857a6  100%)" }} variant="contained" >
                     Partner
@@ -859,8 +859,8 @@ const DistAdminDashboard = () => {
             </Box>
             </>
             ):(null)}
-        </DistLayout>
+        </StateLayout>
     )
 }
 
-export default DistAdminDashboard
+export default StateAdminDashboard

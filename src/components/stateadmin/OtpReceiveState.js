@@ -1,4 +1,7 @@
 
+
+
+
 import React, { useState, useEffect } from "react";
 import ReactCodeInput from "react-code-input";
 
@@ -19,12 +22,13 @@ import {
 
 
 
-import { successMessage, errorMessage } from '../utils';
+
 import { useNavigate } from "react-router-dom";
+import { errorMessage, successMessage } from "../../utils";
 
 const CORRECT_PIN_CODE = "111222";
 
-const OtpReceive = ({ mobile, changeForm }) => {
+const OtpReceiveState = ({ mobile, changeForm }) => {
 
     document.title = "APKA DUKAN | REGISTER"
     const navigate = useNavigate();
@@ -53,7 +57,7 @@ const OtpReceive = ({ mobile, changeForm }) => {
 
     const sendOtp = (e) => {
         e.preventDefault()
-        fetch(`/api/otpReceiveDistAdmin`, {
+        fetch(`/api/otpReceiveStateAdmin`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
@@ -77,7 +81,7 @@ const OtpReceive = ({ mobile, changeForm }) => {
                 localStorage.setItem('jwt',JSON.stringify(data))
                 successMessage('Register Successfully')
                 setPinCode('')
-                navigate('/dist/AdminDashboard')
+                navigate('/state/dashboard')
                 
 
             }
@@ -143,4 +147,4 @@ const OtpReceive = ({ mobile, changeForm }) => {
     );
 };
 
-export default OtpReceive;
+export default OtpReceiveState;

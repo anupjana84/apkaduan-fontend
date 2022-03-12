@@ -1,25 +1,26 @@
 
 import * as React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
-import {Box,Button,Tooltip,Avatar,MenuItem} from '@mui/material';
+import {Box,Button,Tooltip,Avatar,MenuItem,Toolbar,
+    Menu,List,Typography,Divider,IconButton,ListItem} from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
+
+
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/icons-material/Menu';
+
+
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
+
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { ChildCareRounded } from '@mui/icons-material';
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link,useNavigate } from 'react-router-dom'
+import { isAutheticated } from '../../helper';
+
 
 const drawerWidth = 240;
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -89,6 +90,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 const Layout=({children})=> {
+ const navigate= useNavigate()
+
   const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -116,6 +119,10 @@ const Layout=({children})=> {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  const logOut=()=>{
+      localStorage.removeItem('jwt')
+      navigate('/')
+  }
 
   return (
     <Box sx={{ display: 'flex'}}>
@@ -144,9 +151,11 @@ const Layout=({children})=> {
           </Typography>
           
           <Typography  sx={{marginRight:'5px',fontSize:{ xs: '15px', md: '25px' }}}  >
-          APKA @gmail.com
+         
           </Typography>
-          <Button variant="contained" sx={{backgroundImage:"linear-gradient(to right, #56CCF2 0%, #2F80ED  51%, #56CCF2  100%)"}} >Logout</Button>
+          <Button variant="contained"
+           onClick={logOut}
+          sx={{backgroundImage:"linear-gradient(to right, #56CCF2 0%, #2F80ED  51%, #56CCF2  100%)"}} >Logout</Button>
          
          
         </Toolbar>
@@ -161,18 +170,20 @@ const Layout=({children})=> {
         </DrawerHeader>
         <Divider />
         <List>
-         <NavLink sx={{marginTop:'1px'}}
+         {/* <NavLink sx={{marginTop:'1px'}}
+           to="/dashboard"
          className={(isActive) =>
+          
                     'nav-link dashnavlink' + (isActive.isActive ? ' bg-info dashnavlink1' : '')
-                  } to="/dashboard">
+                  } >
             <ListItem
-            to="/dashboard" button>
+           button>
               <ListItemIcon>
                  <InboxIcon /> 
               </ListItemIcon>
               <ListItemText style={{textDecoration:"none"}} primary={"Dashboard"} />
             </ListItem>
-          </NavLink>
+          </NavLink> */}
          <NavLink to="/allService" 
          sx={{marginTop:'1px'}}
           className={(isActive) =>

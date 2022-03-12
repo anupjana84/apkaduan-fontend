@@ -66,7 +66,7 @@ const Register = () => {
 
         }),
         onSubmit: (value, { resetForm }) => {
-            console.log(value);
+           
             fetch(`/api/register`, {
                 method: "POST",
                 headers: {
@@ -92,8 +92,7 @@ const Register = () => {
                         //    // success:false
                         // })
                         errorMessage(data.error)
-                        resetForm({
-                        })
+                       
                         // console.log(data.error)
                     } else {
                         successMessage('Register Successfully')
@@ -210,7 +209,7 @@ const Register = () => {
                             <Box sx={{ py: 2 }}>
                                 <Button
                                     color="primary"
-                                    disabled={formik.isSubmitting}
+                                    disabled={!formik.isValid || !formik.dirty}
                                     fullWidth
                                     size="large"
                                     type="submit"
@@ -231,11 +230,11 @@ const Register = () => {
                                 spacing={{ xs: 1, sm: 2, md: 4 }}
                                 >
                                 <Button variant="contained" sx={{backgroundColor:'#0ce222',textTransform:"none",   borderRadius:'25px',}}
-                                onClick={()=>{navigate("/otpSend",{state:'stateadmin'})}}
-                                >State Channel Partner</Button>
+                                onClick={()=>{navigate("/OtpSendDist",{state:'stateadmin'})}}
+                                >District Channel Partner </Button>
                                 <Button variant="contained"
-                                     onClick={()=>{navigate("/otpSend",{state:'distadmin'})}}
-                                sx={{backgroundColor:'#0ce222',textTransform:"none", mt: { xs: '10px', md: '' },borderRadius:'25px', }}>District Channel Partner</Button>
+                                     onClick={()=>{navigate("/otpSendState",{state:'distadmin'})}}
+                                sx={{backgroundColor:'#0ce222',textTransform:"none", mt: { xs: '10px', md: '' },borderRadius:'25px', }}>State Channel Partner</Button>
                                 <Button variant="contained" 
                                      onClick={()=>{navigate("/otpSend",{state:'seller'})}}
                                    sx={{backgroundColor:'#0ce222',textTransform:"none", mt: { xs: '10px', md: '' },borderRadius:'25px' }}>Seller

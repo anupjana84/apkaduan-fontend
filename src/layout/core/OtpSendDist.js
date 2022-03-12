@@ -5,12 +5,9 @@ import * as Yup from 'yup';
 import {
     Box,
     Button,
-    
     Container,
-  
     Card,
     TextField,
- 
     Grid,
     Typography
 } from '@mui/material';
@@ -21,14 +18,14 @@ import {  errorMessage } from '../../utils';
 import { useNavigate,  } from "react-router-dom";
 
 import { Lodder } from '../../components/Lodder';
-import OtpReceive from '../../components/OtpReceive';
+import OtpReceive from '../../components/distadmin/OtpReceive';
 
 
-const OtpSend = () => {
+const OtpSendDist = () => {
 
     document.title = "APKA DUKAN | REGISTER"
-    const navigate = useNavigate();
-    // const location = useLocation();
+   
+    
     const [mobile, setMobile] = useState(null);
     const [open, setOpen] = useState(false);
     const [form1, setForm1] = useState(true)
@@ -68,7 +65,7 @@ const OtpSend = () => {
                     return result.json()
                 })
                 .then(data => {
-                   console.log(data)
+                //    console.log(data)
                     if (data.error) {
                         setOpen(false)
                         errorMessage(data.error)
@@ -167,4 +164,4 @@ const OtpSend = () => {
     );
 };
 
-export default OtpSend;
+export default OtpSendDist;

@@ -60,7 +60,7 @@ const Header = () => {
                   className={(isActive) =>
                     'nav-link' + (isActive.isActive ? ' bg-danger' : '')
                   }
-                  to="/dashboard"
+                  to="/dist"
                 >
                  Dashboard
                 </NavLink>

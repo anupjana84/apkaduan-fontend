@@ -11,15 +11,18 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 import Master from './Master';
+import { errorMessage, successMessage } from '../../utils';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate=useNavigate()
   document.title ="APKA DUKAN | LOGIN"
     const formik = useFormik({
         initialValues: {
           email: '',
-          name: '',
+          password: '',
           
         },
         validationSchema: Yup.object({
@@ -39,8 +42,43 @@ const Login = () => {
               'Password is required'),
          
         }),
-        onSubmit:(value)=>{
-            console.log(value);
+        onSubmit:(value, { resetForm })=>{
+          fetch(`/api/login`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: value.email,
+                password: value.password
+            })
+        })
+            .then(res => {
+                return res.json()
+            })
+            .then(result => {
+              console.log(result);
+                if (result.error) {
+                    errorMessage(result.error)
+                
+                } else {
+
+                    successMessage('Register Successfully')
+                     localStorage.setItem('jwt',JSON.stringify(result.data))
+                    if (result.data.user.role=='admin') {
+                       navigate('/admin/dashboard')
+                    }
+                    if (result.data.user.role=='distadmin') {
+                       navigate('/dist/AdminDashboard')
+                    }
+                      
+                    resetForm({})
+                }
+
+               
+            })
+            .catch(err => { console.log(err) })
           }
       });
   return(<Master>

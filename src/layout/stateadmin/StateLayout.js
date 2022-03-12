@@ -89,7 +89,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const DistLayout=({children})=> {
+const StateLayout=({children})=> {
  const navigate= useNavigate()
   const theme = useTheme();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -150,7 +150,7 @@ const DistLayout=({children})=> {
           </Typography>
           
           <Typography variant="h6" sx={{marginRight:'5px'}}  >
-          
+          {isAutheticated().user.mobile?isAutheticated().user.mobile:null}
           </Typography>
           <Button variant="contained"
           onClick={logOut}
@@ -207,4 +207,4 @@ const DistLayout=({children})=> {
     </Box>
   );
 }
-export default DistLayout
+export default StateLayout
